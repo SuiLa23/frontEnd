@@ -3,50 +3,87 @@ import Quiz from "@/components/Quiz";
 import { useState } from "react";
 import Select from "react-select";
 import { Circles } from "react-loader-spinner";
-const questions: Array<Question> = [
-  {
-    question: "What is the capital of France?",
-    options: ["London", "Berlin", "Paris", "Madrid"],
-    correctAnswer: "Paris",
-  },
-  {
-    question: "Which planet is known as the Red Planet?",
-    options: ["Mars", "Venus", "Jupiter", "Earth"],
-    correctAnswer: "Mars",
-  },
-  // Add more questions here
-];
+import { useWalletKit } from "@mysten/wallet-kit";
+
 interface Question {
-  question: string;
+  description: string;
   options: Array<string>;
-  correctAnswer: string;
+  answer_index: number;
 }
 
 const difficultyLevel = [
-  { value: "easy", label: "Easy" },
-  { value: "medium", label: "Medium" },
-  { value: "hard", label: "Hard" },
+  { value: "A1", label: "A1" },
+  { value: "A2", label: "A2" },
+  { value: "B1", label: "B1" },
+  { value: "B2", label: "B2" },
+  { value: "C1", label: "C1" },
+  { value: "C2", label: "C2" },
 ];
-
+const baseUrl = "http://localhost:3001/question/exercise";
 export default function Practice() {
   const [difficulty, setDifficulty] = useState(difficultyLevel[0]);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState<number>(0);
   const [question, setQuestion] = useState<Question>();
   const [verified, setVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const { currentAccount } = useWalletKit();
   const handleOptionChange = (selectedOption: any) => {
     setSelectedOption(selectedOption);
   };
   const verify = () => {
+    if (selectedOption == question?.answer_index) {
+      alert("correct");
+    } else {
+      alert("wrong");
+    }
     setVerified(true);
   };
   const getQuestion = async () => {
     setIsLoading(true);
-    await new Promise((r) => setTimeout(r, 2000));
-    setQuestion(questions[0]);
-    setVerified(false);
-    setIsLoading(false);
+    try {
+      let queryParams = {};
+      if (currentAccount) {
+        queryParams = new URLSearchParams({
+          user_address: currentAccount.address,
+          difficuly: difficulty.value,
+        });
+        console.log(queryParams);
+      } else {
+        throw new Error();
+      }
+      const url = `${baseUrl}`;
+
+      // Options for the fetch request
+      const options = {
+        method: "GET", // HTTP method (e.g., 'GET', 'POST', 'PUT', 'DELETE', etc.)
+        headers: {
+          "Content-Type": "application/json", // Content type of the request body
+          // Add other headers as needed (e.g., authorization headers)
+        },
+        parameters: queryParams, // Convert data to JSON format
+      };
+      console.log("fetch");
+      const res = await fetch(url, options)
+        .then((response) => {
+          console.log("Res" + JSON.stringify(response));
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          return data;
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+      setQuestion(res.exercise);
+      setVerified(false);
+      setIsLoading(false);
+    } catch (error) {
+      throw new Error();
+    }
   };
   return (
     <>
@@ -89,7 +126,9 @@ export default function Practice() {
           ) : (
             <>
               <div className="bg-white p-4 rounded shadow-md">
-                <p className="text-lg text-black my-2">{question.question}</p>
+                <p className="text-lg text-black my-2">
+                  {question.description}
+                </p>
                 <ul>
                   {question.options.map((option, index) => (
                     <li key={index} className="mb-2">
@@ -97,8 +136,8 @@ export default function Practice() {
                         <input
                           type="radio"
                           value={option}
-                          checked={selectedOption === option}
-                          onChange={() => handleOptionChange(option)}
+                          checked={selectedOption === index}
+                          onChange={() => handleOptionChange(index)}
                           className="mr-2"
                         />
                         {option}

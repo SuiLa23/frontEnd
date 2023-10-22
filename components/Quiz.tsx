@@ -1,27 +1,27 @@
 "use client";
 import { useEffect, useState } from "react";
 
-const questions = [
-  {
-    question: "What is the capital of France?",
-    options: ["London", "Berlin", "Paris", "Madrid"],
-    correctAnswer: "Paris",
-  },
-  {
-    question: "Which planet is known as the Red Planet?",
-    options: ["Mars", "Venus", "Jupiter", "Earth"],
-    correctAnswer: "Mars",
-  },
-  // Add more questions here
-];
+// const questions = [
+//   {
+//     question: "What is the capital of France?",
+//     options: ["London", "Berlin", "Paris", "Madrid"],
+//     correctAnswer: "Paris",
+//   },
+//   {
+//     question: "Which planet is known as the Red Planet?",
+//     options: ["Mars", "Venus", "Jupiter", "Earth"],
+//     correctAnswer: "Mars",
+//   },
+//   // Add more questions here
+// ];
 
-export default function Quiz() {
+export default function Quiz({ questions }: any) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [score, setScore] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [warning, setWarning] = useState(null);
-
+  console.log(questions);
   const handleOptionChange = (selectedOption: any) => {
     setSelectedOption(selectedOption);
   };

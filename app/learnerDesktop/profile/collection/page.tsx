@@ -1,6 +1,4 @@
 "use client";
-import { useWalletKit } from "@mysten/wallet-kit";
-import type { GetStaticProps } from "next";
 // pages/profile.tsx
 import { useState } from "react";
 

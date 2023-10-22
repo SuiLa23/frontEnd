@@ -2,7 +2,7 @@
 import { useState } from "react";
 import React from "react";
 
-export default function createQuestion() {
+export default function CreateQuestion() {
   const [question, setQuestion] = useState();
   const [options, setOptions] = useState(["", "", "", ""]);
 
@@ -12,7 +12,7 @@ export default function createQuestion() {
     setOptions(updatedOptions);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     const questionData = {
       question,
@@ -41,7 +41,7 @@ export default function createQuestion() {
           <input
             type="text"
             value={question}
-            onChange={(e) => setQuestion(e.target.value)}
+            onChange={(e: any) => setQuestion(e.target.value)}
             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
           />
         </div>
@@ -54,7 +54,7 @@ export default function createQuestion() {
               <input
                 type="text"
                 value={option}
-                onChange={(e) => handleOptionChange(index, e.target.value)}
+                onChange={(e: any) => handleOptionChange(index, e.target.value)}
                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
               />
             </div>

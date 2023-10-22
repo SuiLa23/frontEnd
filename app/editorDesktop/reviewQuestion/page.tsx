@@ -8,11 +8,11 @@ const question = {
   correctAnswer: "Mars",
 };
 
-export default function reviewQuestion() {
+export default function ReviewQuestion() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
 
-  const handleOptionChange = (e) => {
+  const handleOptionChange = (e: any) => {
     setSelectedOption(e.target.value);
   };
 
