@@ -7,7 +7,7 @@ export default function NavBar() {
   return (
     <div>
       <div id="main-navbar" className="navbar">
-        <h2 className="logo">App Name and Logo</h2>
+        <h2 className="logo">SuiLa.ALPHA</h2>
         <nav>
           <ul>
             <li className="mr-6">
