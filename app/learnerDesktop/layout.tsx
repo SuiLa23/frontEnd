@@ -3,9 +3,8 @@ import { Inter } from "next/font/google";
 
 import LearnerNav from "@/components/ProfileNav";
 import SideMenu from "@/components/SideMenu";
-import Provider from "../providers";
-import { useWallet } from "@suiet/wallet-kit";
 import NeedConnection from "@/components/NeedConnection";
+import { useWalletKit } from "@mysten/wallet-kit";
 
 const inter = Inter({ subsets: ["latin"] });
 export default function LearnerLayout({
@@ -13,7 +12,7 @@ export default function LearnerLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const wallet = useWallet();
+  const wallet = useWalletKit();
   if (!wallet) {
     return (
       <main className="min-h-screen flex justify-center bg-slate-100">
