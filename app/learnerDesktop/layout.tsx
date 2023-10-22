@@ -12,8 +12,8 @@ export default function LearnerLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const wallet = useWalletKit();
-  if (!wallet) {
+  const { currentAccount } = useWalletKit();
+  if (!currentAccount) {
     return (
       <main className="min-h-screen flex justify-center bg-slate-100">
         <NeedConnection></NeedConnection>
